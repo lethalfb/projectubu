@@ -21,10 +21,6 @@ pipeline {
         }
         stage('codetest'){
             agent any
-            options {
-                // Timeout counter starts BEFORE agent is allocated
-                timeout(time: 1, unit: 'SECONDS')
-            }
             steps{
                 sh "mvn test"
                 echo "testing was done"
@@ -32,20 +28,12 @@ pipeline {
         }
         stage('codeQA'){
             agent any
-            options {
-                // Timeout counter starts BEFORE agent is allocated
-                timeout(time: 1, unit: 'SECONDS')
-            }
             steps{
                 sh "mvn pmd:pmd"
             }
         }
         stage('codepackage'){
             agent any
-            options {
-                // Timeout counter starts BEFORE agent is allocated
-                timeout(time: 1, unit: 'SECONDS')
-            }
             steps{
                 sh "mvn package"
             }
