@@ -24,11 +24,11 @@ pipeline{
                   sh 'mvn pmd:pmd'
               }
           }
-           stage('UnitTest'){
+           stage('codetest'){
 		  
               steps{
 	         
-                  sh 'codetest'
+                  sh 'mvn test'
               }
                post {
                success {
