@@ -1,42 +1,50 @@
-pipeline {
-    agent none
-    stages {
-        stage('checkout'){
-            agent any
-            steps{
-                echo 'cloning...'
-                git url: "https://github.com/lethalfb/projectubu"
-            }
-        }
-        stage('codecompile') {
-            agent any
-            options {
-                // Timeout counter starts BEFORE agent is allocated
-                timeout(time: 1, unit: 'SECONDS')
-            }
-            steps {
-                echo 'compiling'
-                sh "mvn compile"
-            }
-        }
-        stage('codetest'){
-            agent any
-            steps{
-                sh "mvn test"
-                echo "testing was done"
-            }
-        }
-        stage('codeQA'){
-            agent any
-            steps{
-                sh "mvn pmd:pmd"
-            }
-        }
-        stage('codepackage'){
-            agent any
-            steps{
-                sh "mvn package"
-            }
-        }
-    }
+
+pipeline{
+	agent any
+      stages{
+           stage('Checkout'){
+	    
+               steps{
+		 echo 'cloning..'
+                 git 'https://github.com/lethalfb/projectubu.git'
+              }
+          }
+          stage('codecompile'){
+             
+              steps{
+                  echo 'compiling..'
+                  sh 'mvn compile'
+	      }
+          }
+          stage('codeQA'){
+		  
+              steps{
+		    
+		  echo 'codeReview'
+                  sh 'mvn pmd:pmd'
+              }
+          }
+           stage('UnitTest'){
+		  
+              steps{
+	         
+                  sh 'codetest'
+              }
+               post {
+               success {
+                   junit 'target/surefire-reports/*.xml'
+               }
+           }	
+          }
+          
+          stage('codepackage'){
+		  
+              steps{
+		  
+                  sh 'mvn package'
+              }
+          }
+	     
+          
+      }
 }
