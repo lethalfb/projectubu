@@ -9,6 +9,15 @@ pipeline{
                  git 'https://github.com/lethalfb/projectubu.git'
               }
           }
+	  stage('Build') {
+            steps {
+                sh 'echo "Hello World"'
+                sh '''
+                    echo "Multiline shell steps works too"
+                    ls -lah
+                '''
+            }
+         }
           stage('codecompile'){
              
               steps{
